@@ -46,7 +46,6 @@ f=open("text.txt")
 # f.close() 
 
 
-f=open("text.txt")
 
 # for i in f.read().split("\n"):
 #     for x in i.split(",")[-2].split("-"):

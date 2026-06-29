@@ -1,0 +1,195 @@
+import random
+import math
+import time
+
+TOTAL_QUESTIONS = 15
+
+
+def generate_arithmetic():
+    operation = random.choice(["+", "-", "*", "/"])
+
+    if operation == "+":
+        a = random.randint(1, 100)
+        b = random.randint(1, 100)
+        return f"{a} + {b}", a + b
+
+    elif operation == "-":
+        a = random.randint(1, 100)
+        b = random.randint(1, a)
+        return f"{a} - {b}", a - b
+
+    elif operation == "*":
+        a = random.randint(1, 12)
+        b = random.randint(1, 12)
+        return f"{a} * {b}", a * b
+
+    else:
+        b = random.randint(1, 12)
+        answer = random.randint(1, 12)
+        a = b * answer
+        return f"{a} / {b}", answer
+
+
+def generate_complex():
+    problem_type = random.choice(["sqrt", "power"])
+
+    if problem_type == "sqrt":
+        root = random.randint(2, 15)
+        number = root ** 2
+        return f"sqrt({number})", root
+
+    else:
+        base = random.randint(2, 5)
+        power = random.randint(2, 4)
+        return f"{base} ** {power}", base ** power
+
+
+def generate_problem(level=2):
+    if level == 1:
+        return generate_arithmetic()
+
+    if random.random() < 0.7:
+        return generate_arithmetic()
+
+    return generate_complex()
+
+
+def start_timer():
+    return time.time()
+
+
+def stop_timer(start_time):
+    return round(time.time() - start_time, 2)
+
+
+def calculate_results(correct_answers, total_time):
+    average_time = total_time / TOTAL_QUESTIONS
+
+    base_score = correct_answers * 10
+
+    if average_time < 3:
+        bonus = 20
+    elif average_time < 5:
+        bonus = 10
+    else:
+        bonus = 0
+
+    final_score = base_score + bonus
+
+    if final_score >= 90:
+        message = "🔥 Ajoyib ishladingiz! Tezlik ham, aniqlik ham juda zo‘r!"
+    elif final_score >= 60:
+        message = "💪 Yaxshi natija! Biroz ko‘proq mashq qilsangiz yanada kuchli bo‘lasiz!"
+    else:
+        message = "🙂 Hali hammasi oldinda! Mashq qilsangiz juda yaxshilanadi."
+
+    return {
+        "correct": correct_answers,
+        "total_time": round(total_time, 2),
+        "average_time": round(average_time, 2),
+        "base_score": base_score,
+        "bonus": bonus,
+        "final_score": final_score,
+        "message": message
+    }
+
+
+def get_user_answer():
+    try:
+        answer = input("Javobingiz: ").strip()
+
+        if answer == "":
+            return None
+
+        answer = answer.replace(",", ".")
+        return float(answer)
+
+    except ValueError:
+        return "ERROR"
+
+
+def play_game():
+    print("=" * 40)
+    print("🧮 MATH RACE O‘YINIGA XUSH KELIBSIZ!")
+    print("=" * 40)
+
+    print("\nSizga 15 ta matematik misol beriladi.")
+    print("Maqsad: iloji boricha TEZ va TO‘G‘RI javob berish.")
+
+    input("\nBoshlash uchun ENTER bosing...")
+
+    correct_answers = 0
+    total_time = 0
+
+    for question in range(1, TOTAL_QUESTIONS + 1):
+
+        print("\n" + "-" * 40)
+        print(f"SAVOL {question}/{TOTAL_QUESTIONS}")
+        print("-" * 40)
+
+        problem, correct_answer = generate_problem()
+
+        print(f"\nMisol: {problem}")
+
+        start = start_timer()
+
+        user_answer = get_user_answer()
+
+        elapsed = stop_timer(start)
+
+        total_time += elapsed
+
+        if user_answer == "ERROR":
+            print("⚠️ Xatolik: Son kiritilmadi.")
+            print("Bu savol o'tkazib yuborildi.")
+            continue
+
+        if user_answer is None:
+            print("❌ Bo‘sh javob.")
+            continue
+
+        if abs(user_answer - correct_answer) < 0.0001:
+            print("✅ To‘g‘ri javob!")
+            correct_answers += 1
+        else:
+            print("❌ Noto‘g‘ri javob.")
+            print(f"To‘g‘ri javob: {correct_answer}")
+
+        print(f"⏱️ Vaqtingiz: {elapsed} sekund")
+
+    result = calculate_results(correct_answers, total_time)
+
+    print("\n")
+    print("=" * 45)
+    print("🏁 NATIJALAR")
+    print("=" * 45)
+
+    print(f"Jami savollar      : {TOTAL_QUESTIONS}")
+    print(f"To‘g‘ri javoblar   : {result['correct']}")
+    print(f"Umumiy vaqt        : {result['total_time']} sekund")
+    print(f"O‘rtacha vaqt      : {result['average_time']} sekund")
+    print("\n" + "-" * 45)
+    print("🎯 YAKUNIY BALL")
+    print("-" * 45)
+
+    print(f"Asosiy ball        : {result['base_score']}")
+    print(f"Tezlik bonusi      : +{result['bonus']}")
+    print(f"Umumiy ball        : {result['final_score']}")
+
+    print("=" * 45)
+    print(result["message"])
+    print("=" * 45)
+
+
+while True:
+    play_game()
+
+    print("\nO‘yinni qayta o‘ynaysizmi?")
+    print("[1] Ha")
+    print("[2] Yoq")
+
+    choice = input("Tanlovingiz: ")
+
+    if choice != "1":
+        print("\nRahmat! 👋")
+        break

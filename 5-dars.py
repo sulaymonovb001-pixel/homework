@@ -20,7 +20,7 @@
 #     print("bor")
 
 # ====================================
-dct = {}
+# dct = {}
 # keys = ['ten', 'twenty' , 'thirty']
 # values = [10 , 20 , 30 ]
 

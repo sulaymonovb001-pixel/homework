@@ -1,2 +1,2 @@
-for i in lst:
-#     if i >
+
+# print(f"O'rtacha ish haqqi : {natija}")

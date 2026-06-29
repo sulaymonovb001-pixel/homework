@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "ism": "Alisher",
+        "ball": 4.5,
+        "guruh": "A1"
+    },
+    {
+        "id": 2,
+        "ism": "Malika",
+        "ball": 4.8,
+        "guruh": "A1"
+    },
+    {
+        "id": 3,
+        "ism": "Sardor",
+        "ball": 3.9,
+        "guruh": "B2"
+    }
+]
